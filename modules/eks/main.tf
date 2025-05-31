@@ -6,7 +6,7 @@ resource "aws_eks_cluster" "eks_cluster" {
     subnet_ids = var.subnet_ids
   }
 }
-u
+
 resource "aws_eks_node_group" "node_group" {
   cluster_name    = aws_eks_cluster.eks_cluster.name
   node_group_name = "eks-node-group-role"

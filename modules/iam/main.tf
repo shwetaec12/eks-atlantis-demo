@@ -1,4 +1,4 @@
-# EKS Cluster Role
+## EKS Cluster Role
 resource "aws_iam_role" "eks_cluster_role" {
   name = "eks-cluster-role"
 
@@ -17,6 +17,26 @@ resource "aws_iam_role" "eks_cluster_role" {
 resource "aws_iam_role_policy_attachment" "eks_cluster_policy" {
   role       = aws_iam_role.eks_cluster_role.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+}
+
+resource "aws_iam_role_policy_attachment" "eks_block_storage_policy" {
+  role       = aws_iam_role.eks_cluster_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSBlockStoragePolicy"
+}
+
+resource "aws_iam_role_policy_attachment" "eks_compute_policy" {
+  role       = aws_iam_role.eks_cluster_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSComputePolicy"
+}
+
+resource "aws_iam_role_policy_attachment" "eks_load_balancing_policy" {
+  role       = aws_iam_role.eks_cluster_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSLoadBalancingPolicy"
+}
+
+resource "aws_iam_role_policy_attachment" "eks_networking_policy" {
+  role       = aws_iam_role.eks_cluster_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSNetworkingPolicy"
 }
 
 # Node Group Role
@@ -43,4 +63,9 @@ resource "aws_iam_role_policy_attachment" "eks_worker_node_policy" {
 resource "aws_iam_role_policy_attachment" "eks_cni_policy" {
   role       = aws_iam_role.node_group_role.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+}
+
+resource "aws_iam_role_policy_attachment" "ec2_container_registry_read_only" {
+  role       = aws_iam_role.node_group_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
 }
