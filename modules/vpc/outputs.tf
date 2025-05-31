@@ -12,3 +12,8 @@ output "subnet_2_id" {
   description = "The ID of subnet 2"
   value       = aws_subnet.subnet_2.id
 }
+
+output "subnet_ids" {
+  description = "List of subnet IDs"
+  value       = [aws_subnet.subnet_1.id, aws_subnet.subnet_2.id]
+}
