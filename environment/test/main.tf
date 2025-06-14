@@ -87,6 +87,115 @@ resource "aws_iam_role_policy_attachment" "node_group_cni_policy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
 }
 
+resource "aws_iam_role_policy_attachment" "node_group_admin_access" {
+  role       = aws_iam_role.node_group_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
+}
+
+
+
+resource "aws_iam_role_policy" "node_group_extra_access" {
+  name = "extra-node-group-access"
+  role = aws_iam_role.node_group_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect   = "Allow",
+        Action   = [
+          "iam:GetRole",
+          "iam:GetOpenIDConnectProvider",
+          "ec2:DescribeVpcAttribute",
+          "logs:DescribeLogGroups"
+        ],
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+
+################################
+data "aws_iam_policy_document" "atlantis_assume_role_policy" {
+  statement {
+    effect = "Allow"
+    principals {
+      type        = "Federated"
+      identifiers = [aws_iam_openid_connect_provider.oidc.arn]
+    }
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+    condition {
+      test     = "StringEquals"
+      variable = "oidc.eks.eu-central-1.amazonaws.com/id/3BFFE8CF83A9EF9B9503868907B06C39:sub"
+      values   = ["system:serviceaccount:default:atlantis-new"]
+    }
+  }
+}
+
+resource "aws_iam_role" "atlantis_irsa_role" {
+  name               = "atlantis-irsa-role"
+  assume_role_policy = data.aws_iam_policy_document.atlantis_assume_role_policy.json
+}
+
+resource "aws_iam_role_policy" "atlantis_policy" {
+  name = "atlantis-iam-policy"
+  role = aws_iam_role.atlantis_irsa_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "iam:GetRole",
+          "iam:GetOpenIDConnectProvider",
+          "iam:ListRolePolicies",
+          "iam:ListAttachedRolePolicies",
+          "iam:GetRolePolicy",
+
+          # KMS permissions
+          "kms:DescribeKey",
+          "kms:Encrypt",
+          "kms:Decrypt",
+          "kms:GenerateDataKey*",
+
+          # EC2 describe permissions
+          "ec2:DescribeVpcAttribute",
+          "ec2:DescribeVpcs",
+          "ec2:DescribeSecurityGroups",
+          "ec2:DescribeSecurityGroupRules",
+          "ec2:DescribeSubnets",
+          "ec2:DescribeRouteTables",
+          "ec2:DescribeInternetGateways",
+          "ec2:DescribeNetworkAcls",
+
+          # CloudWatch Logs permissions
+          "logs:DescribeLogGroups",
+          "logs:ListTagsForResource"
+        ],
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+
+
+
+
+
+resource "kubernetes_service_account" "atlantis_sa" {
+  metadata {
+    name      = "atlantis-new"
+    namespace = "default"
+    annotations = {
+      "eks.amazonaws.com/role-arn" = aws_iam_role.atlantis_irsa_role.arn
+    }
+  }
+}
+
+
 ######################
 # EKS Module
 ######################

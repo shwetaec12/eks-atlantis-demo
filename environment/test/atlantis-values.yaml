@@ -1,7 +1,7 @@
 orgAllowlist: "github.com/shwetaec12/eks-atlantis-demo"
 github:
   user: "shwetaec12"
-  token: "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" 
+  token: "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" 
   secret: "d9f7a3b1e8c54f72a6d8e9b3c1f0a7d4e5b6c7d8"
 
 repoConfig: |-
@@ -15,3 +15,8 @@ volumeClaim:
 
 service:
   type: "LoadBalancer"
+
+# Use existing service account with IRSA role attached
+serviceAccount:
+  create: false
+  name: "atlantis-new"
