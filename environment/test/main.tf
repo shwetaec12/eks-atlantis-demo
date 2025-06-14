@@ -1,7 +1,7 @@
 ######################
 # Terraform State S3 Bucket
 ######################
-
+/*
 resource "aws_s3_bucket" "terraform_state" {
   bucket = "sh-terraform-state-bucket"  
 
@@ -33,6 +33,7 @@ resource "aws_s3_bucket_public_access_block" "terraform_state_block" {
   ignore_public_acls      = true
   restrict_public_buckets = true
 }
+*/
 
 ######################
 # VPC Module
@@ -184,21 +185,31 @@ resource "aws_iam_role_policy" "atlantis_policy" {
       {
         Effect = "Allow",
         Action = [
-          # Existing actions ...
-          "ec2:DescribeAddresses",
-          "ec2:DescribeVpcAttribute",
-          "ec2:DescribeVpcs",
-          "ec2:DescribeSecurityGroups",
-          "ec2:DescribeSubnets",
-          "ec2:DescribeRouteTables",
-          "ec2:DescribeInternetGateways",
-          "ec2:DescribeNetworkAcls",
-          # KMS actions
+          "s3:ListBucket",
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:DeleteObject"
+        ],
+        Resource = [
+          "arn:aws:s3:::sh-terraform-state-bucket",
+          "arn:aws:s3:::sh-terraform-state-bucket/*"
+        ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "sts:AssumeRoleWithWebIdentity"
+        ],
+        Resource = "*"
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "ec2:Describe*",
           "kms:DescribeKey",
           "kms:Encrypt",
           "kms:Decrypt",
           "kms:GenerateDataKey*",
-          # CloudWatch Logs actions
           "logs:DescribeLogGroups",
           "logs:ListTagsForResource"
         ],
@@ -207,11 +218,6 @@ resource "aws_iam_role_policy" "atlantis_policy" {
     ]
   })
 }
-
-
-
-
-
 
 
 resource "kubernetes_service_account" "atlantis_sa" {

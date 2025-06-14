@@ -1,14 +1,14 @@
 orgAllowlist: "github.com/shwetaec12/eks-atlantis-demo"
 github:
   user: "shwetaec12"
-  token: "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" 
+  token: "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" 
   secret: "d9f7a3b1e8c54f72a6d8e9b3c1f0a7d4e5b6c7d8"
 
 repoConfig: |-
   repos:
     - id: github.com/shwetaec12/eks-atlantis-demo
       
-atlantisUrl: "http://a074b08fcad594e958ab89aa39b94bc1-1800393865.eu-central-1.elb.amazonaws.com"
+atlantisUrl: "http://a8502ec96abbb45e3a5a090b2cb057b7-755795555.eu-central-1.elb.amazonaws.com"
 
 volumeClaim:
   storageClassName: "gp3-immediate"
