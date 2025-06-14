@@ -12,6 +12,7 @@ data "aws_eks_cluster_auth" "this" {
   name = module.eks.cluster_name
 }
 
+
 # Kubernetes provider using EKS details
 provider "kubernetes" {
   host                   = data.aws_eks_cluster.this.endpoint

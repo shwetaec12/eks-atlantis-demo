@@ -1,7 +1,7 @@
 orgAllowlist: "github.com/shwetaec12/eks-atlantis-demo"
 github:
   user: "shwetaec12"
-  token: "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" 
+  token: "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" 
   secret: "d9f7a3b1e8c54f72a6d8e9b3c1f0a7d4e5b6c7d8"
 
 repoConfig: |-
