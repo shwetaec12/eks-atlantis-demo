@@ -148,29 +148,21 @@ resource "aws_iam_role_policy" "atlantis_policy" {
       {
         Effect = "Allow",
         Action = [
-          "iam:GetRole",
-          "iam:GetOpenIDConnectProvider",
-          "iam:ListRolePolicies",
-          "iam:ListAttachedRolePolicies",
-          "iam:GetRolePolicy",
-
-          # KMS permissions
-          "kms:DescribeKey",
-          "kms:Encrypt",
-          "kms:Decrypt",
-          "kms:GenerateDataKey*",
-
-          # EC2 describe permissions
+          # Existing actions ...
+          "ec2:DescribeAddresses",
           "ec2:DescribeVpcAttribute",
           "ec2:DescribeVpcs",
           "ec2:DescribeSecurityGroups",
-          "ec2:DescribeSecurityGroupRules",
           "ec2:DescribeSubnets",
           "ec2:DescribeRouteTables",
           "ec2:DescribeInternetGateways",
           "ec2:DescribeNetworkAcls",
-
-          # CloudWatch Logs permissions
+          # KMS actions
+          "kms:DescribeKey",
+          "kms:Encrypt",
+          "kms:Decrypt",
+          "kms:GenerateDataKey*",
+          # CloudWatch Logs actions
           "logs:DescribeLogGroups",
           "logs:ListTagsForResource"
         ],
@@ -179,6 +171,7 @@ resource "aws_iam_role_policy" "atlantis_policy" {
     ]
   })
 }
+
 
 
 
