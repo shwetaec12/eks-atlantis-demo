@@ -166,7 +166,7 @@ data "aws_iam_policy_document" "atlantis_assume_role_policy" {
     actions = ["sts:AssumeRoleWithWebIdentity"]
     condition {
       test     = "StringEquals"
-      variable = "oidc.eks.eu-central-1.amazonaws.com/id/3BFFE8CF83A9EF9B9503868907B06C39:sub"
+      variable = "oidc.eks.eu-central-1.amazonaws.com/id/C73BE2AE0D7D948ADA92A8E0DDAA1D3F:sub"
       values   = ["system:serviceaccount:default:atlantis-new"]
     }
   }
