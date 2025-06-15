@@ -3,13 +3,13 @@ workflows:
   custom:
     plan:
       steps:
-        - init:
-            extra_args: ["-migrate-state"]
+        - run: 
+            name: Custom Terraform Init
+            command: terraform init -migrate-state -input=false
         - plan
     apply:
       steps:
         - apply
 projects:
-  - name: eks-atlantis-demo
-    dir: environment/test
+  - dir: environment/test
     workflow: custom
