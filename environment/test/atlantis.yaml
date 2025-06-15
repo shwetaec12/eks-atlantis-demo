@@ -3,12 +3,13 @@ workflows:
   custom:
     plan:
       steps:
-        - init
-        - plan:
+        - init:
             extra_args: ["-migrate-state"]
+        - plan
     apply:
       steps:
         - apply
 projects:
-  - dir: environment/test
+  - name: eks-atlantis-demo
+    dir: environment/test
     workflow: custom
