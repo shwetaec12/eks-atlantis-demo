@@ -203,6 +203,7 @@ resource "kubernetes_service_account" "atlantis_sa" {
       "eks.amazonaws.com/role-arn" = aws_iam_role.atlantis_irsa_role.arn
     }
   }
+  depends_on = [module.eks]
 }
 
 
