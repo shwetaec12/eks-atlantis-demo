@@ -236,18 +236,23 @@ module "eks" {
     }
   }
 
-  aws_auth_roles = [
-    {
-      rolearn  = aws_iam_role.eks_admin.arn
-      username = "eks-admin"
-      groups   = ["system:masters"]
-    },
-    {
-      rolearn  = aws_iam_role.node_group_role.arn
-      username = "system:node:{{EC2PrivateDNSName}}"
-      groups   = ["system:bootstrappers", "system:nodes"]
-    }
-  ]
+aws_auth_roles = [
+  {
+    rolearn  = aws_iam_role.eks_admin.arn
+    username = "eks-admin"
+    groups   = ["system:masters"]
+  },
+  {
+    rolearn  = aws_iam_role.node_group_role.arn
+    username = "system:node:{{EC2PrivateDNSName}}"
+    groups   = ["system:bootstrappers", "system:nodes"]
+  },
+  {
+    rolearn  = "arn:aws:iam::895976263444:role/atlantis-irsa-role"
+    username = "atlantis"
+    groups   = ["system:masters"]
+  }
+]
 
   aws_auth_users = [
     {
