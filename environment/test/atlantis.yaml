@@ -1,0 +1,16 @@
+version: 3
+workflows:
+  custom:
+    plan:
+      steps:
+        - run:
+            name: Custom Terraform Init with migrate-state
+            command: terraform init -migrate-state -input=false
+        - plan
+    apply:
+      steps:
+        - apply
+
+projects:
+  - dir: environment/test
+    workflow: custom
