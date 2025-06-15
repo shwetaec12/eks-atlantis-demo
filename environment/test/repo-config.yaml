@@ -1,0 +1,3 @@
+repos:
+  - id: github.com/nashavi12/eks-atlantis-demo
+    allow_custom_workflows: true
