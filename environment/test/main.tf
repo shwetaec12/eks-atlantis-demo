@@ -154,6 +154,8 @@ resource "aws_iam_role_policy" "node_group_extra_access" {
 
 
 ################################
+
+
 data "aws_iam_policy_document" "atlantis_assume_role_policy" {
   statement {
     effect = "Allow"
@@ -184,40 +186,13 @@ resource "aws_iam_role_policy" "atlantis_policy" {
     Statement = [
       {
         Effect = "Allow",
-        Action = [
-          "s3:ListBucket",
-          "s3:GetObject",
-          "s3:PutObject",
-          "s3:DeleteObject"
-        ],
-        Resource = [
-          "arn:aws:s3:::sh-terraform-state-bucket",
-          "arn:aws:s3:::sh-terraform-state-bucket/*"
-        ]
-      },
-      {
-        Effect = "Allow",
-        Action = [
-          "sts:AssumeRoleWithWebIdentity"
-        ],
-        Resource = "*"
-      },
-      {
-        Effect = "Allow",
-        Action = [
-          "ec2:Describe*",
-          "kms:DescribeKey",
-          "kms:Encrypt",
-          "kms:Decrypt",
-          "kms:GenerateDataKey*",
-          "logs:DescribeLogGroups",
-          "logs:ListTagsForResource"
-        ],
+        Action = "*",
         Resource = "*"
       }
     ]
   })
 }
+
 
 
 resource "kubernetes_service_account" "atlantis_sa" {
