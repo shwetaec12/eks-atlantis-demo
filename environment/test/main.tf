@@ -63,7 +63,7 @@ module "vpc" {
 
 # EKS Admin Role with OIDC trust
 resource "aws_iam_openid_connect_provider" "oidc" {
-  url = "https://oidc.eks.eu-central-1.amazonaws.com/id/3BFFE8CF83A9EF9B9503868907B06C39"
+  url = "https://oidc.eks.eu-central-1.amazonaws.com/id/C73BE2AE0D7D948ADA92A8E0DDAA1D3F"
 
   client_id_list = ["sts.amazonaws.com"]
 
